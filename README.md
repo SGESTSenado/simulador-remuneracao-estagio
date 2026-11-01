@@ -120,7 +120,8 @@ Variáveis de ambiente do build (**só estas duas**):
 
 ### GitHub Pages (hospedagem atual)
 
-- Endereço: **https://matheuselrocha.github.io/simulador-remuneracao-estagio/** (painel em `.../admin/`).
+- Endereço: **https://sgestsenado.github.io/simulador-remuneracao-estagio/** (painel em `.../admin/`).
+- Repositório: **https://github.com/SGESTSenado/simulador-remuneracao-estagio** (conta do GitHub do SGEST, vinculada ao Gmail do SGEST). Transferido da conta pessoal do estagiário que criou o projeto em 01/11/2026; o endereço antigo do site deixou de funcionar.
 - Cada push na `main` dispara o workflow *Publicar no GitHub Pages* (`.github/workflows/pages.yml`): testes → build → deploy.
 - As duas variáveis vêm dos secrets do repositório `SUPABASE_URL` e `SUPABASE_ANON_KEY` (Settings → Secrets and variables → Actions). Os mesmos secrets alimentam o keepalive. Sem eles o site sai com o snapshot.
 - Republicar sem mudar código: Actions → *Publicar no GitHub Pages* → *Run workflow*.
@@ -157,8 +158,8 @@ npm run snapshot
    select id from auth.users where email = 'GMAIL_DO_SGEST@gmail.com';
    ```
 7. **URLs do "esqueci a senha".** Authentication → URL Configuration:
-   - *Site URL*: `https://matheuselrocha.github.io/simulador-remuneracao-estagio/`
-   - *Redirect URLs*: `https://matheuselrocha.github.io/simulador-remuneracao-estagio/admin/` (e `http://localhost:5173/admin/` se for testar localmente)
+   - *Site URL*: `https://sgestsenado.github.io/simulador-remuneracao-estagio/`
+   - *Redirect URLs*: `https://sgestsenado.github.io/simulador-remuneracao-estagio/admin/` (e `http://localhost:5173/admin/` se for testar localmente)
 8. **Copiar URL e anon key.** Project Settings → API → *Project URL* e *anon public* → secrets `SUPABASE_URL` e `SUPABASE_ANON_KEY` do repositório no GitHub (usados pelo deploy e pelo keepalive).
 9. **Manter o projeto ativo.** Com os secrets do passo 8, o workflow *Manter Supabase ativo* roda **todo dia** e faz leituras reais em todas as tabelas públicas e no serviço de login (o plano gratuito pausa após ~7 dias de inatividade). Em 01/11/2026 o projeto foi pausado mesmo com uma leitura a cada 3 dias, por isso o reforço. **Se o projeto pausar mesmo assim** (chega um e-mail do Supabase e o workflow falha com HTTP 000): entre no supabase.com com o Gmail do SGEST, abra o projeto e clique em **Resume project**. Nada se perde; o prazo para reativar é longo. Enquanto isso, o simulador usa o snapshot e avisa. A garantia definitiva é o plano Pro (US$ 25/mês).
 10. **Conferir.** `npm run verificar:producao` deve mostrar três "OK".
@@ -189,7 +190,7 @@ A senha do **Gmail institucional do SGEST** dá acesso a tudo: ao projeto Supaba
 
 ## Guia para a equipe do SGEST
 
-Endereço do painel: https://matheuselrocha.github.io/simulador-remuneracao-estagio/admin/ Ao entrar, preencha **"Seu nome"** no topo: ele vai para a auditoria de tudo o que você gravar. A sessão cai após 30 minutos sem uso.
+Endereço do painel: https://sgestsenado.github.io/simulador-remuneracao-estagio/admin/ Ao entrar, preencha **"Seu nome"** no topo: ele vai para a auditoria de tudo o que você gravar. A sessão cai após 30 minutos sem uso.
 
 ### Reajustar a bolsa ou o auxílio-transporte
 
