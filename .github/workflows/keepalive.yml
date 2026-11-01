@@ -1,18 +1,26 @@
-# O plano gratuito do Supabase pausa o projeto após ~7 dias sem atividade.
-# Esta leitura simples (GET, anon key) a cada 3 dias mantém o projeto ativo.
-# Requer os secrets SUPABASE_URL e SUPABASE_ANON_KEY no repositório (ver README).
+# Mantém o projeto Supabase (plano gratuito) ativo.
+#
+# O Supabase pausa projetos gratuitos após ~7 dias de "inatividade". Em 01/11/2026
+# o projeto foi pausado mesmo com uma leitura simples a cada 3 dias, então este
+# workflow passou a rodar TODO DIA e a fazer leituras reais em todas as tabelas
+# públicas e no serviço de login — o mesmo tráfego que o simulador gera.
+# Não há garantia de que o Supabase conte isso como atividade; se o projeto pausar
+# mesmo assim, reative-o no dashboard (README, "Configuração do Supabase").
+#
+# Requer os secrets SUPABASE_URL e SUPABASE_ANON_KEY no repositório.
 name: Manter Supabase ativo
 
 on:
   schedule:
-    - cron: "17 11 */3 * *"
+    # todo dia às 11:17 UTC (08:17 em Brasília)
+    - cron: "17 11 * * *"
   workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Leitura simples na API
+      - name: Leituras no banco e no login
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
@@ -21,11 +29,30 @@ jobs:
             echo "::error::Configure os secrets SUPABASE_URL e SUPABASE_ANON_KEY."
             exit 1
           fi
-          status=$(curl -s -o /dev/null -w "%{http_code}" \
-            -H "apikey: $SUPABASE_ANON_KEY" -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
-            "$SUPABASE_URL/rest/v1/anos_calendario?select=ano&limit=1")
-          echo "HTTP $status"
-          if [ "$status" != "200" ]; then
-            echo "::error::Supabase respondeu $status. Se o projeto estiver pausado, reative-o no dashboard."
+          falhas=0
+          ler() {
+            # $1 = descrição, $2 = caminho; até 3 tentativas (rede instável)
+            for tentativa in 1 2 3; do
+              status=$(curl -s -o resposta.json -w "%{http_code}" --max-time 30 \
+                -H "apikey: $SUPABASE_ANON_KEY" -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+                "$SUPABASE_URL$2") || status="000"
+              [ "$status" = "200" ] && break
+              sleep 10
+            done
+            if [ "$status" = "200" ]; then
+              echo "OK    $1 (HTTP 200, $(wc -c < resposta.json) bytes)"
+            else
+              echo "::error::$1 falhou (HTTP $status)."
+              falhas=$((falhas + 1))
+            fi
+          }
+          # As mesmas consultas do simulador (leem as linhas de verdade, não só o cabeçalho)
+          ler "valores"            "/rest/v1/valores?select=tipo,valor_centavos,vigencia_inicio&order=vigencia_inicio"
+          ler "anos publicados"    "/rest/v1/anos_calendario?select=ano,status&status=eq.publicado&order=ano"
+          ler "feriados e pontos"  "/rest/v1/datas_nao_uteis?select=data,descricao,tipo&order=data"
+          ler "login (saúde)"      "/auth/v1/health"
+          ler "login (config.)"    "/auth/v1/settings"
+          if [ "$falhas" -gt 0 ]; then
+            echo "::error::$falhas leitura(s) falharam. Se o endereço não resolve (HTTP 000), o projeto provavelmente foi PAUSADO: entre no supabase.com com o Gmail do SGEST e clique em 'Resume project'."
             exit 1
           fi

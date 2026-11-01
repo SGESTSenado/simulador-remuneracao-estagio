@@ -160,7 +160,7 @@ npm run snapshot
    - *Site URL*: `https://matheuselrocha.github.io/simulador-remuneracao-estagio/`
    - *Redirect URLs*: `https://matheuselrocha.github.io/simulador-remuneracao-estagio/admin/` (e `http://localhost:5173/admin/` se for testar localmente)
 8. **Copiar URL e anon key.** Project Settings → API → *Project URL* e *anon public* → secrets `SUPABASE_URL` e `SUPABASE_ANON_KEY` do repositório no GitHub (usados pelo deploy e pelo keepalive).
-9. **Manter o projeto ativo.** Com os secrets do passo 8, o workflow *Manter Supabase ativo* faz uma leitura a cada 3 dias (o plano gratuito pausa após ~7 dias sem atividade). **Se o projeto pausar mesmo assim**, basta entrar no dashboard e clicar em *Restore/Resume project*; enquanto isso o simulador usa o snapshot e avisa.
+9. **Manter o projeto ativo.** Com os secrets do passo 8, o workflow *Manter Supabase ativo* roda **todo dia** e faz leituras reais em todas as tabelas públicas e no serviço de login (o plano gratuito pausa após ~7 dias de inatividade). Em 01/11/2026 o projeto foi pausado mesmo com uma leitura a cada 3 dias, por isso o reforço. **Se o projeto pausar mesmo assim** (chega um e-mail do Supabase e o workflow falha com HTTP 000): entre no supabase.com com o Gmail do SGEST, abra o projeto e clique em **Resume project**. Nada se perde; o prazo para reativar é longo. Enquanto isso, o simulador usa o snapshot e avisa. A garantia definitiva é o plano Pro (US$ 25/mês).
 10. **Conferir.** `npm run verificar:producao` deve mostrar três "OK".
 
 ## Backup do banco
