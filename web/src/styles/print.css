@@ -38,6 +38,9 @@
     display: block;
     padding: 12px 0 0;
   }
+  .layout__colunas {
+    display: block;
+  }
   .layout__resultado {
     position: static;
     max-height: none;

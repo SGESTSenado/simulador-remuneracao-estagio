@@ -262,11 +262,6 @@ function atualizarRotulos(folha: AnoMes, ctx: ContextoFolha | null) {
   $("bloco-mes-atual").hidden = !desligamento;
   $("data-saida-ajuda").textContent = `Deve estar em ${formatarAnoMes(folha)}.`;
 
-  // Entrada: mostra até quando vai o contrato
-  $("data-entrada-ajuda").textContent = ctx?.dataFinalContrato
-    ? `Seu contrato de 2 anos vai, no máximo, até ${formatarData(ctx.dataFinalContrato)}.`
-    : "Está no seu termo de compromisso de estágio.";
-
   // Mês de entrada: sem mês anterior
   const ehEntrada = !!ctx?.ehMesDeEntrada;
   $("bloco-mes-anterior").hidden = ehEntrada;
@@ -294,8 +289,8 @@ function atualizarRotulos(folha: AnoMes, ctx: ContextoFolha | null) {
   $("ant-nao-presenciais-ajuda").textContent = ctx?.mesAnteriorEhEntrada
     ? "Conte só os dias a partir da sua data de entrada. Os dias anteriores à entrada não entraram na sua primeira folha."
     : feriasAnt > 0
-      ? `Os ${diasUteisTexto(feriasAnt)} de férias de ${nomeAnt} já são descontados pelo simulador. Conte só as outras ausências (faltas, atestados, remoto).`
-      : "Conte faltas, atestados, recesso e trabalho remoto autorizado: o auxílio-transporte só é devido em dia presencial.";
+      ? `Os ${diasUteisTexto(feriasAnt)} de férias de ${nomeAnt} já são descontados pelo simulador. Conte só as outras ausências (faltas e atestados).`
+      : "Conte faltas, atestados e recesso: o auxílio-transporte só é devido aos dias de comparecimento presencial ao estágio.";
   definirAtributo(campos.antNaoPres, "max", ctx?.maxNaoPresenciaisMesAnterior != null ? String(ctx.maxNaoPresenciaisMesAnterior) : null);
 
   // Mês do desligamento

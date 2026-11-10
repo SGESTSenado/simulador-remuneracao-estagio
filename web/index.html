@@ -52,7 +52,7 @@
           <p class="faixa__selo">Programa de Estágio do Senado Federal</p>
           <h1 class="faixa__titulo">Simulador de Remuneração de Estágio</h1>
           <p class="faixa__texto">
-            Estime quanto você vai receber na folha de um mês: bolsa de estágio + auxílio-transporte − descontos.
+            Calcule quanto você vai receber em um determinado mês: bolsa de estágio + auxílio-transporte − descontos do mês anterior.
           </p>
         </div>
       </div>
@@ -61,6 +61,9 @@
     <main id="conteudo" class="layout">
       <div id="aviso-parametros" class="alerta alerta--atencao layout__largo" role="status" hidden></div>
 
+      <!-- Formulário + resultado num grid próprio: o resultado "gruda" na tela só
+           dentro deste bloco e não invade o "Como funciona o cálculo". -->
+      <div class="layout__colunas">
       <form id="form" class="layout__form" novalidate>
         <!-- 1. Datas -->
         <section class="card" aria-labelledby="t-datas">
@@ -139,7 +142,7 @@
               <div class="campo" data-campo="mesAnterior.faltasInjustificadas">
                 <label for="ant-faltas" id="ant-faltas-rotulo">Desses dias, quantos foram faltas injustificadas?</label>
                 <input type="number" id="ant-faltas" inputmode="numeric" min="0" step="1" placeholder="0" aria-describedby="ant-faltas-ajuda ant-faltas-erro" />
-                <p class="campo__ajuda" id="ant-faltas-ajuda">Faltas injustificadas descontam também a bolsa.</p>
+                <p class="campo__ajuda" id="ant-faltas-ajuda">Faltas injustificadas também descontam a bolsa-estágio.</p>
                 <p class="campo__erro" id="ant-faltas-erro" hidden></p>
               </div>
             </div>
@@ -175,6 +178,7 @@
           <button type="button" class="botao botao--secundario nao-imprimir" id="imprimir">Imprimir ou salvar em PDF</button>
         </div>
       </section>
+      </div>
 
       <details class="como-funciona layout__largo" id="como-funciona">
         <summary>Como funciona o cálculo</summary>
@@ -189,17 +193,16 @@
           </ul>
 
           <h3>Os descontos são do mês anterior</h3>
-          <p>A folha de um mês paga o valor cheio e desconta as ausências do mês anterior, para dar tempo de processar e corrigir a frequência.</p>
+          <p>A folha de pagamento de um mês paga o valor cheio de bolsa e auxílio-transporte e desconta as ausências do mês anterior. Isso ocorre para que haja tempo de processar e corrigir a frequência do mês que se encerrou.</p>
           <ul>
-            <li><strong>Dia sem presença física</strong> (falta, atestado, recesso ou trabalho remoto autorizado): desconta o AT daquele dia.</li>
+            <li><strong>Dia sem presença física</strong> (falta, atestado ou recesso): desconta o AT daquele dia.</li>
             <li><strong>Falta injustificada</strong>: desconta também a bolsa daquele dia (bolsa mensal ÷ número de dias do mês da falta).</li>
             <li>No <strong>recesso</strong>, a bolsa é mantida integralmente; o AT é descontado no mês seguinte, porque recesso não é trabalho presencial.</li>
           </ul>
 
-          <h3>Primeiro e segundo mês</h3>
+          <h3>Primeiro mês</h3>
           <ul>
-            <li>No <strong>mês em que você entra</strong>, a primeira folha é proporcional ao período a partir da entrada: bolsa pelos dias corridos desde a entrada (cada dia vale a bolsa ÷ número de dias do mês) e AT pelos dias úteis desde a entrada. Não há descontos, porque não existe mês anterior.</li>
-            <li>No <strong>segundo mês</strong>, informe só as ausências a partir da sua data de entrada. Os dias anteriores à entrada não entraram na sua primeira folha.</li>
+            <li>No <strong>mês em que você entra</strong>, a primeira folha é proporcional aos dias trabalhados: bolsa dos dias trabalhados no mês, desde a entrada (cada dia vale a bolsa ÷ número de dias do mês) + AT dos dias úteis desde a entrada. Não há descontos, porque nessa situação não existe mês anterior.</li>
           </ul>
 
           <div data-recurso="desligamento" hidden>
@@ -208,17 +211,8 @@
             <li>São descontadas as ausências do mês anterior e também as do próprio mês do desligamento.</li>
             <li><strong>Férias</strong> são sempre de 30 dias e só depois de completar 1 ano. As que não foram usufruídas são pagas em dinheiro na saída (só bolsa, sem AT; cada dia vale a bolsa ÷ 30): as primeiras férias inteiras (ou os dias que faltavam, se você saiu durante elas) e as segundas proporcionais, 2,5 dias por mês completo depois do 1º ano. Com menos de 1 ano, 2,5 dias por mês completo.</li>
             <li>Quem completa 2 anos <strong>usufrui as últimas férias nos 30 dias finais</strong> do contrato (obrigatório): a bolsa é paga normalmente e não há AT nesses dias.</li>
-            <li>O contrato termina, no máximo, na véspera do dia em que você completa 2 anos de estágio.</li>
           </ul>
           </div>
-
-          <h3>Regras a confirmar com o SGEST</h3>
-          <p>Nestes pontos o simulador usa uma regra provisória e avisa quando ela afeta o resultado:</p>
-          <ul>
-            <li data-recurso="desligamento" hidden>Fração de mês no recesso proporcional (hoje: conta só meses completos).</li>
-            <li data-recurso="desligamento" hidden>Desligamento no meio do mês (hoje: bolsa pelos dias corridos até a saída, cada dia = bolsa ÷ dias do mês, e AT por dias úteis até a saída).</li>
-            <li>Desconto do mês anterior após reajuste (hoje: usa o valor vigente no mês anterior).</li>
-          </ul>
 
           <p class="dica"><strong>Dica SGEST:</strong> acompanhe seus lançamentos e confira sua frequência regularmente.</p>
         </div>
