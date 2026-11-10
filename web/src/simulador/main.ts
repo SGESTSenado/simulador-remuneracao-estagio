@@ -83,11 +83,11 @@ function lerDias(input: HTMLInputElement): number {
 
 /**
  * Recursos que podem ser ligados/desligados sem apagar código.
- * desligamento: modo "Último mês (desligamento)" — ativo desde 23/10/2026, com a
- * observação de simulação aproximada no resultado. Para desativar: false aqui
- * (o HTML marcado com data-recurso="desligamento" some).
+ * desligamento: modo "Último mês (desligamento)" — desativado em 09/11/2026 a
+ * pedido do SGEST (esteve ativo de 23/10 a 09/11/2026). Para reativar: true aqui
+ * (o HTML marcado com data-recurso="desligamento" volta a aparecer).
  */
-const RECURSOS = { desligamento: true } as const;
+const RECURSOS = { desligamento: false } as const;
 
 function aplicarRecursos() {
   document.querySelectorAll<HTMLElement>("[data-recurso=desligamento]").forEach((n) => (n.hidden = !RECURSOS.desligamento));

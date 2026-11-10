@@ -218,7 +218,7 @@ A partir de outubro o painel avisa se o ano seguinte não está publicado.
 
 ## Pontos em aberto (regras a confirmar)
 
-> **Modo "Último mês (desligamento)" ativo no site desde 23/10/2026**, com a observação "Simulação aproximada" junto ao valor a receber, porque ainda há pendências com a Folha (ver [Desligamento e férias](#desligamento-e-férias-regras-confirmadas-e-pendências)). Para desativar, mude `RECURSOS.desligamento` para `false` em `web/src/simulador/main.ts`.
+> **Modo "Último mês (desligamento)" desativado no site desde 09/11/2026**, a pedido do SGEST (esteve ativo de 23/10 a 09/11/2026, com a observação "Simulação aproximada"). O cálculo continua no motor e nos testes; ainda há pendências com a Folha (ver [Desligamento e férias](#desligamento-e-férias-regras-confirmadas-e-pendências)). Para reativar, mude `RECURSOS.desligamento` para `true` em `web/src/simulador/main.ts`.
 
 O motor implementa uma regra provisória para cada ponto abaixo, parametrizada em `calc/src/parametros.ts` (`RegrasProvisorias`), e o simulador mostra "Regra a confirmar com o SGEST" quando o ponto afeta o resultado.
 
@@ -238,7 +238,7 @@ Outras decisões que vale confirmar:
 
 ## Desligamento e férias: regras confirmadas e pendências
 
-Levantamento feito pelo SGEST para reativar o modo "Último mês (desligamento)". **As regras abaixo já estão implementadas no motor e testadas** (exemplo do SGEST incluso); o modo está ativo no site desde 23/10/2026, com a observação de simulação aproximada até as pendências do fim desta seção serem respondidas.
+Levantamento feito pelo SGEST para reativar o modo "Último mês (desligamento)". **As regras abaixo já estão implementadas no motor e testadas** (exemplo do SGEST incluso); o modo esteve ativo no site de 23/10 a 09/11/2026 e está desativado; antes de reativar, convém responder as pendências do fim desta seção.
 
 ### Confirmadas (SGEST, 23/10/2026)
 
