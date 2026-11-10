@@ -6,6 +6,10 @@
   display: grid;
   gap: 24px;
 }
+.layout__colunas {
+  display: grid;
+  gap: 24px;
+}
 .layout__form {
   display: grid;
   gap: 24px;
@@ -13,12 +17,9 @@
 }
 
 @media (min-width: 960px) {
-  .layout {
+  .layout__colunas {
     grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
     align-items: start;
-  }
-  .layout__largo {
-    grid-column: 1 / -1;
   }
   .layout__resultado {
     position: sticky;
