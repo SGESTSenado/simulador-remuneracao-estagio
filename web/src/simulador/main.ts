@@ -133,21 +133,24 @@ function hojeLocal(): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
-/** Última folha fechada: a do mês anterior ao atual (em outubro, a última é a de setembro). */
-function ultimaFolhaFechada(): AnoMes {
-  return mesAnterior(anoMesDe(hojeLocal()));
+/**
+ * Última folha disponível: a do mês atual, ainda não paga (em novembro, a última
+ * é a de novembro). Assim o estagiário simula cenários antes do fechamento.
+ */
+function ultimaFolhaDisponivel(): AnoMes {
+  return anoMesDe(hojeLocal());
 }
 
 let faixaDosMeses = "";
 /**
- * Lista do "Mês da folha": do mês de entrada até a última folha fechada,
+ * Lista do "Mês da folha": do mês de entrada até a folha do mês atual,
  * só com meses de anos cujo calendário está publicado. Sem data de entrada,
  * começa no primeiro mês publicado. Padrão: a folha mais recente.
  */
 function preencherMeses() {
   const anos = new Set(parametros.calendario.anos);
   const ordenados = [...anos].sort((a, b) => a - b);
-  const ultima = ultimaFolhaFechada();
+  const ultima = ultimaFolhaDisponivel();
   const entrada = dataCompleta(campos.dataEntrada.value) ? anoMesDe(campos.dataEntrada.value) : null;
 
   const meses: AnoMes[] = [];
@@ -164,7 +167,7 @@ function preencherMeses() {
   const anterior = campos.folha.value;
   campos.folha.replaceChildren();
   if (meses.length === 0) {
-    campos.folha.append(el("option", { value: "" }, ordenados.length === 0 ? "Nenhum calendário publicado" : "Nenhuma folha fechada ainda"));
+    campos.folha.append(el("option", { value: "" }, ordenados.length === 0 ? "Nenhum calendário publicado" : "Nenhuma folha disponível ainda"));
     campos.folha.disabled = true;
     return;
   }
@@ -524,17 +527,17 @@ function preencherComoFunciona() {
 
 // ───────────────────────── Início ─────────────────────────
 
-/** Quem entrou no mês atual ainda não tem folha fechada (ou não há calendário publicado). */
+/** Sem folha para simular: entrada depois do mês atual (ou não há calendário publicado). */
 function semFolhaDisponivel() {
   limparErros();
   $("extrato").replaceChildren();
   const entrada = dataCompleta(campos.dataEntrada.value) ? anoMesDe(campos.dataEntrada.value) : null;
-  const ultima = ultimaFolhaFechada();
+  const ultima = ultimaFolhaDisponivel();
   if (entrada && compararMeses(entrada, ultima) > 0) {
     const pagamento = proximoMes(entrada);
     definirResumo(
       `<p class="destaque__vazio">Sua primeira folha será a de <strong>${formatarAnoMes(entrada)}</strong>, paga até o 5º dia útil de ${nomeMes(pagamento.mes)}. ` +
-        `A simulação dela fica disponível a partir de ${formatarData(primeiroDia(pagamento))}.</p>`,
+        `A simulação dela fica disponível a partir de ${formatarData(primeiroDia(entrada))}.</p>`,
     );
   } else {
     definirResumo(`<p class="destaque__vazio">Ainda não há calendário publicado pelo SGEST para simular.</p>`);
